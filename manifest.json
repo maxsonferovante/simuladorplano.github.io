@@ -1,0 +1,13 @@
+{
+    "name": "SimuladorPlanoDeSaude",
+    "short_name": "SimuladorPlanoDeSaude",
+    "display": "standalone",
+    "start_url": "index.html",
+    "icons": [
+      {
+        "src": "imagens/icon/icon.ico",
+        "sizes": "128x128",
+        "type": "imagens/ico"
+      }
+    ]
+  }
