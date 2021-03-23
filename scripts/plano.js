@@ -200,32 +200,56 @@ $(document).ready(function(){
             return Math.round10(temp, -2);
 
         }
-       
+        function contaBeneficiario(){
+            var cont = 0;
+            for(i=0; i < $nodeListInputBeneficiarios.length ; i++){
+                if ($nodeListInputBeneficiarios[i] !=0){
+                    cont++;
+                }
+            }
+            return cont-1;
+        }
         function mostrarResultado(valorPlano){
-           /*  $resultado.append(
-                <div class="card">
-                <h5 class="card-header">Simulação do plano de saúde</h5>
-                <div class="card-body">
-                <table class="table table-bordered">
+            var pt = 0.06, pd = 0.02;
+            var proSind =  Math.round10(valorPlano -(valorPlano - (valorPlano*(pd*contaBeneficiario())+pt)),-2);
+        
+            var pt1 = 0.08, pd1 = 0.035;
+            var proCDP = Math.round10(valorPlano -(valorPlano - (valorPlano*(pd1*contaBeneficiario())+pt1)),2);
 
-                <tbody>
-                    <tr>
-                        <td>Mensalidade do Plano</td>
-                        <td>valorPlano</td>
-                    </tr>
-                    <tr>
-                        <td>Proposto pela CDP</td>
-                        <td></td>
-                    </tr>
-                </tbody>
-                </table>
-                </div>
-                </div>              
-            ); */
+            $resultado.innerHTML = "";
+            $resultado.innerHTML =
+                "<div class='card'>"+
+                "<h5 class='card-header'>Preços</h5>"+
+                "<div class='card-body'>"+
+                "<table class='table table-bordered'>"+
+
+                '<tbody>'+
+                '<tbody>'+
+                    '<tr>'+
+                        '<td>Mensalidade do Plano</td>'+
+                        '<td>'+valorPlano+'</td>'+
+                        '<td>Titular / Dependente </td>'+
+                    '</tr>'+
+                    '<tr>'+
+                    '    <td>Proposto pela Sindicato</td>'+
+                        '<td>'+proSind+'</td>'+
+                        '<td>'+pt*100+'%        '+pd*100+'%'+'</td>'+
+                    '</tr>'+
+                    '<tr>'+
+                    '    <td>Proposto pela CDP</td>'+
+                        '<td>'+proCDP+'</td>'+
+                        '<td>'+pt1*100+'%       '+Math.round(pd1*100,-2)+'%'+'</td>'+
+                    '</tr>'+
+                   
+                '</tbody>'+
+                '</table>'+
+                '</div>'+
+                '</div>';
         }
         function bindEvents(){
 
            $selectAcomodacao.onchange = function(){
+                $resultado.innerHTML = "";
                 switch ($selectAcomodacao.options[$selectAcomodacao.selectedIndex].value) {
                     case "0":
                         $aparAdd.innerHTML = "";
@@ -252,7 +276,7 @@ $(document).ready(function(){
             
             
             $btnCalculoPlano.onclick = function(){
-
+                $resultado.innerHTML = "";
                 switch ($selectAcomodacao.options[$selectAcomodacao.selectedIndex].value) {
                     case "1":
                      
@@ -262,7 +286,8 @@ $(document).ready(function(){
                           
                             temp = temp + ($nodeListInputBeneficiarios[i].value * $valorEnfer[i]);
                         }
-                        console.log(temp);   
+                        console.log(temp); 
+                        mostrarResultado(Math.round10(temp,-2));  
                         
 
                     break;
@@ -285,6 +310,7 @@ $(document).ready(function(){
                                                                         
                                 }
                                 console.log(temp);
+                                mostrarResultado(Math.round10(temp,-2));  
                         }else{
                             if($nodeListRadioApartamentAdd[0].checked == false && $nodeListRadioApartamentAdd[1].checked == true){
                                
@@ -293,7 +319,8 @@ $(document).ready(function(){
                                       
                                         temp = temp + ($nodeListInputBeneficiarios[i].value * $valorApart[i]);
                                     } 
-                                    console.log(temp);   
+                                    console.log(temp); 
+                                    mostrarResultado(Math.round10(temp,-2));  
                             }
                              
                         }
